@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-//Функция для создания и заполнения матрицы с клавиатуры
 double** createAndFillMatrix(int n)
 {
     double** matrix = new double* [n];
@@ -11,11 +10,11 @@ double** createAndFillMatrix(int n)
         matrix[i] = new double[n];
         for (int j = 0; j < n; ++j)
         {
-            std::cout << "Введите элемент [" << i << "][" << j << "]: ";
+            std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЅГ«ГҐГ¬ГҐГ­ГІ [" << i << "][" << j << "]: ";
             std::cin >> matrix[i][j];
             if (!std::cin.good())
             {
-                std::cout << "Ошибка... Это не число \n";
+                std::cout << "ГЋГёГЁГЎГЄГ ... ГќГІГ® Г­ГҐ Г·ГЁГ±Г«Г® \n";
                 exit(-1);
             }
         }
@@ -24,7 +23,6 @@ double** createAndFillMatrix(int n)
 }
 
 
-//Функция для освобождения памяти
 void freeMatrix(double** matrix, int n)
 {
     for (int i = 0; i < n; ++i) {
@@ -33,10 +31,9 @@ void freeMatrix(double** matrix, int n)
     delete[] matrix;
 }
 
-//Функция для вывода матрицы на экран
 void printMatrix(double** matrix, int n)
 {
-    std::cout << "Матрица: \n";
+    std::cout << "ГЊГ ГІГ°ГЁГ¶Г : \n";
     std::cout << "---------- \n";
     for (int i = 0; i < n; i++)
     {
@@ -49,25 +46,24 @@ void printMatrix(double** matrix, int n)
     std::cout << "---------- \n";
 }
 
-//Функция для нахождения определителя
 double determinant(double** matrix, int n) {
-    if (n == 1)                         //если матрица размера 1х1
+    if (n == 1)                         //ГҐГ±Г«ГЁ Г¬Г ГІГ°ГЁГ¶Г  Г°Г Г§Г¬ГҐГ°Г  1Гµ1
     {
-        return matrix[0][0];            //то значением определителя является единственный элемент матрицы
+        return matrix[0][0];            //ГІГ® Г§Г­Г Г·ГҐГ­ГЁГҐГ¬ Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гї ГїГўГ«ГїГҐГІГ±Гї ГҐГ¤ГЁГ­Г±ГІГўГҐГ­Г­Г»Г© ГЅГ«ГҐГ¬ГҐГ­ГІ Г¬Г ГІГ°ГЁГ¶Г»
     }
-    else if (n == 2)                    //если матрица размера 2х2
+    else if (n == 2)                    //ГҐГ±Г«ГЁ Г¬Г ГІГ°ГЁГ¶Г  Г°Г Г§Г¬ГҐГ°Г  2Гµ2
     {
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];   //определитель вычисляется по следующей формуле
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];   
     }
-    else                                //если матрица размера NxN
+    else                                
     {
         double det = 0;
-        for (int i = 0; i < n; ++i)                     //динамически
-        {                                               //создаем
-            double** minor = new double* [n - 1];       //матрицу
-            for (int j = 1; j < n; ++j)                 //для
-            {                                           //нахождения
-                minor[j - 1] = new double[n - 1];       //минора
+        for (int i = 0; i < n; ++i)                    
+        {                                              
+            double** minor = new double* [n - 1];       
+            for (int j = 1; j < n; ++j)                 
+            {                                          
+                minor[j - 1] = new double[n - 1];       
                 for (int k = 0; k < n; ++k) {
                     if (k < i) {
                         minor[j - 1][k] = matrix[j][k];
@@ -78,69 +74,66 @@ double determinant(double** matrix, int n) {
                 }
             }
             det += (i % 2 == 0 ? 1 : -1) * matrix[0][i] * determinant(minor, n - 1);
-            //Очищаем память
             freeMatrix(minor, n - 1);
         }
         return det;
     }
 }
 
-//Функция для меню
 void printMenu()
 {
-    std::cout << "1. Заполнить обычную матрицу вручную и вычислить её определитель \n";
-    std::cout << "2. Заполнить разреженную матрицу CRS и вычислить её определитель\n";
-    std::cout << "3. Записать разреженную матрицу CRS в файл \n";
-    std::cout << "4. Считать разреженную матрицу CRS из файла и вычислить её определитель\n";
+    std::cout << "1. Г‡Г ГЇГ®Г«Г­ГЁГІГј Г®ГЎГ»Г·Г­ГіГѕ Г¬Г ГІГ°ГЁГ¶Гі ГўГ°ГіГ·Г­ГіГѕ ГЁ ГўГ»Г·ГЁГ±Г«ГЁГІГј ГҐВё Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гј \n";
+    std::cout << "2. Г‡Г ГЇГ®Г«Г­ГЁГІГј Г°Г Г§Г°ГҐГ¦ГҐГ­Г­ГіГѕ Г¬Г ГІГ°ГЁГ¶Гі CRS ГЁ ГўГ»Г·ГЁГ±Г«ГЁГІГј ГҐВё Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гј\n";
+    std::cout << "3. Г‡Г ГЇГЁГ±Г ГІГј Г°Г Г§Г°ГҐГ¦ГҐГ­Г­ГіГѕ Г¬Г ГІГ°ГЁГ¶Гі CRS Гў ГґГ Г©Г« \n";
+    std::cout << "4. Г‘Г·ГЁГІГ ГІГј Г°Г Г§Г°ГҐГ¦ГҐГ­Г­ГіГѕ Г¬Г ГІГ°ГЁГ¶Гі CRS ГЁГ§ ГґГ Г©Г«Г  ГЁ ГўГ»Г·ГЁГ±Г«ГЁГІГј ГҐВё Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гј\n";
 }
 
-//Функция для создания и заполнения разреженной матрицы 
 CRS createCRS()
 {
     CRS matrix;
-    std::cout << "Введите количество строк в матрице: ";
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г±ГІГ°Г®ГЄ Гў Г¬Г ГІГ°ГЁГ¶ГҐ: ";
     std::cin >> matrix.numRows;
     checkInput(matrix.numRows);
 
-    std::cout << "Введите количество ненулевых элементов: ";
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г­ГҐГ­ГіГ«ГҐГўГ»Гµ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў: ";
     std::cin >> matrix.nonZero;
     checkInput(matrix.nonZero);
     if (matrix.nonZero > (matrix.numRows*2))
     {
-        std::cout << "\033[0;31mОшибка ввода\033[0m \n";
+        std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  ГўГўГ®Г¤Г \033[0m \n";
         exit(-1);
     }
 
-    matrix.values = new double[matrix.nonZero];           //создание массива A
-    matrix.colIndices = new int[matrix.nonZero];          //создание массива LJ
-    matrix.rowPointers = new int[matrix.numRows + 1];     //создание массива LI
+    matrix.values = new double[matrix.nonZero];           
+    matrix.colIndices = new int[matrix.nonZero];         
+    matrix.rowPointers = new int[matrix.numRows + 1];    
 
-    std::cout << "Введите значения ненулевых элементов: \n";
-    for (int i = 0; i < matrix.nonZero; i++)            //заполнение
-    {                                                   //массива 
-        std::cin >> matrix.values[i];                   //A
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ Г§Г­Г Г·ГҐГ­ГЁГї Г­ГҐГ­ГіГ«ГҐГўГ»Гµ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў: \n";
+    for (int i = 0; i < matrix.nonZero; i++)            
+    {                                                    
+        std::cin >> matrix.values[i];                   
         if (!std::cin.good())
         {
-            std::cout << "\033[0;31mОшибка ввода\033[0m \n";
+            std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  ГўГўГ®Г¤Г \033[0m \n";
             exit(-1);
         }
     }
 
-    std::cout << "Введите индексы столбцов для каждого ненулевого элемента: (первый столбец - ноль) \n";
-    for (int i = 0; i < matrix.nonZero; ++i)            //заполнение 
-    {                                                   //массива
-        std::cin >> matrix.colIndices[i];               //LJ
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЁГ­Г¤ГҐГЄГ±Г» Г±ГІГ®Г«ГЎГ¶Г®Гў Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® Г­ГҐГ­ГіГ«ГҐГўГ®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ : (ГЇГҐГ°ГўГ»Г© Г±ГІГ®Г«ГЎГҐГ¶ - Г­Г®Г«Гј) \n";
+    for (int i = 0; i < matrix.nonZero; ++i)            
+    {                                                   
+        std::cin >> matrix.colIndices[i];               
         checkInput(matrix.colIndices[i]);
     }
 
-    std::cout << "Введите указатели на строки: \n";
-    for (int i = 0; i <= matrix.numRows; ++i)           //заполнение
-    {                                                   //массива
-        std::cin >> matrix.rowPointers[i];              //LI
+    std::cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГіГЄГ Г§Г ГІГҐГ«ГЁ Г­Г  Г±ГІГ°Г®ГЄГЁ: \n";
+    for (int i = 0; i <= matrix.numRows; ++i)           
+    {                                                   
+        std::cin >> matrix.rowPointers[i];              
         checkInput(matrix.rowPointers[i]);
         if (matrix.rowPointers[0] != 0)
         {
-            std::cout << "\033[0;31mОшибка ввода... Первый элемент должен быть равен нулю \033[0m \n";
+            std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  ГўГўГ®Г¤Г ... ГЏГҐГ°ГўГ»Г© ГЅГ«ГҐГ¬ГҐГ­ГІ Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г°Г ГўГҐГ­ Г­ГіГ«Гѕ \033[0m \n";
             exit(-1);
         }
     }
@@ -148,13 +141,12 @@ CRS createCRS()
 }
 
 
-//Функция преобразования CRS матрицы в обычную
 double** convertCRStoMatrix(const CRS& crs) 
 {
     double** matrix = new double* [crs.numRows];
     for (int i = 0; i < crs.numRows; ++i) 
     {
-        matrix[i] = new double[crs.numRows]();          // Инициализация нулями
+        matrix[i] = new double[crs.numRows]();         
         for (int j = crs.rowPointers[i]; j < crs.rowPointers[i + 1]; ++j) 
         {
             matrix[i][crs.colIndices[j]] = crs.values[j];
@@ -167,12 +159,11 @@ void checkInput(int n)
 {
     if (!std::cin.good() || n < 0)
     {
-        std::cout << "\033[0;31mОшибка ввода\033[0m \n";
+        std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  ГўГўГ®Г¤Г \033[0m \n";
         exit(-1);
     }
 }
 
-//Функция для вывода массива А (значений ненулевых элементов)
 void printMassA(const CRS matrix)
 {
     std::cout << "A: ";
@@ -183,7 +174,6 @@ void printMassA(const CRS matrix)
     std::cout << std::endl;
 }
 
-//Функция для вывода массива LJ (индексов столбцов ненулевых элементов)
 void printMassLJ(const CRS matrix)
 {
     std::cout << "LJ: ";
@@ -194,7 +184,6 @@ void printMassLJ(const CRS matrix)
     std::cout << std::endl;
 }
 
-//Функция для вывода массива LI 
 void printMassLI(const CRS matrix)
 {
     std::cout << "LI: ";
@@ -207,11 +196,11 @@ void printMassLI(const CRS matrix)
 
 void inputInFile(CRS crs)
 {
-    std::ofstream file;               //открываем файл для записи
+    std::ofstream file;              
     file.open("text.txt");
-    if (!file.is_open())              //проверка открытия файла
+    if (!file.is_open())             
     {
-        std::cout << "\033[0;31mОшибка открытия файла\033[0m \n";
+        std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  Г®ГІГЄГ°Г»ГІГЁГї ГґГ Г©Г«Г \033[0m \n";
     }
     else
     {
@@ -233,18 +222,18 @@ void inputInFile(CRS crs)
         }
         file << std::endl;
         
-        std::cout << "\033[0;32mЗапись сделана!\033[0m";
+        std::cout << "\033[0;32mГ‡Г ГЇГЁГ±Гј Г±Г¤ГҐГ«Г Г­Г !\033[0m";
     }
 }
 
 void checkFile()
 {
-    std::ifstream file;             //открываем файл для чтения
+    std::ifstream file;            
     std::string str, str2;
     file.open("text.txt");
-    if (!file.is_open())            //проверка открытия файла
+    if (!file.is_open())           
     {
-        std::cout << "\033[0;31mОшибка открытия файла\033[0m \n";
+        std::cout << "\033[0;31mГЋГёГЁГЎГЄГ  Г®ГІГЄГ°Г»ГІГЁГї ГґГ Г©Г«Г \033[0m \n";
     }
     else
     {
@@ -292,6 +281,6 @@ void checkFile()
         std::cout << std::endl;
         double** matrix = convertCRStoMatrix(crs);
         printMatrix(matrix, crs.numRows);
-        std::cout << "\033[0;32mОпределитель матрицы: \033[0m" << determinant(matrix, crs.numRows) << std::endl;
+        std::cout << "\033[0;32mГЋГЇГ°ГҐГ¤ГҐГ«ГЁГІГҐГ«Гј Г¬Г ГІГ°ГЁГ¶Г»: \033[0m" << determinant(matrix, crs.numRows) << std::endl;
     }
 }
